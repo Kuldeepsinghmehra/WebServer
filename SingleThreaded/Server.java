@@ -18,7 +18,7 @@ public class Server {
                 System.out.println("Connection accepted from client"+acceptConnection);
                 PrintWriter dataTOClient=new PrintWriter(acceptConnection.getOutputStream());
                 BufferedReader dataFromCLient=new BufferedReader(new InputStreamReader(acceptConnection.getInputStream()));
-                System.out.println("To client Hello from Server");
+                System.out.println("Hello from Server");
 
             }catch(IOException ex){
     
