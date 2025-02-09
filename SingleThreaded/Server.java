@@ -4,40 +4,31 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Server {
-    public void run() throws IOException
-    {
-        int port=8010;
-        ServerSocket socket=new ServerSocket(port);
-        socket.setSoTimeout(10000);
-        while (true) {
-            try{
-                System.out.println("System is listening on port "+port);
-                Socket acceptConnection=socket.accept();
-                System.out.println("Connection accepted from client"+acceptConnection);
-                PrintWriter dataTOClient=new PrintWriter(acceptConnection.getOutputStream());
-                BufferedReader dataFromCLient=new BufferedReader(new InputStreamReader(acceptConnection.getInputStream()));
-                System.out.println("Hello from Server");
-
-            }catch(IOException ex){
     
-                ex.printStackTrace();
-            }
-            
+    public void run() throws IOException, UnknownHostException{
+        int port = 8010;
+        ServerSocket socket = new ServerSocket(port);
+        socket.setSoTimeout(20000);
+        while(true){
+            System.out.println("Server is listening on port: "+port);
+            Socket acceptedConnection = socket.accept();
+            System.out.println("Connected to "+acceptedConnection.getRemoteSocketAddress());
+            PrintWriter toClient = new PrintWriter(acceptedConnection.getOutputStream(), true);
+            BufferedReader fromClient = new BufferedReader(new InputStreamReader(acceptedConnection.getInputStream()));
+            toClient.println("Hello World from the server");
         }
-       
+    }
 
+    public static void main(String[] args){
+        Server server = new Server();
+        try{
+            server.run();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
-    public static void main(String[] args) {
-       Server server=new Server();
-       try{
-        server.run();
-       }catch(IOException ex)
-       {
-        ex.printStackTrace();
-       }
-       
-    }
-    
+
 }
