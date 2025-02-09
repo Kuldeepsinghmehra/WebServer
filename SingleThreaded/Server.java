@@ -4,31 +4,45 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Server {
-    
-    public void run() throws IOException, UnknownHostException{
-        int port = 8010;
-        ServerSocket socket = new ServerSocket(port);
-        socket.setSoTimeout(20000);
-        while(true){
-            System.out.println("Server is listening on port: "+port);
-            Socket acceptedConnection = socket.accept();
-            System.out.println("Connected to "+acceptedConnection.getRemoteSocketAddress());
-            PrintWriter toClient = new PrintWriter(acceptedConnection.getOutputStream(), true);
-            BufferedReader fromClient = new BufferedReader(new InputStreamReader(acceptedConnection.getInputStream()));
-            toClient.println("Hello World from the server");
+    public void run() throws IOException {
+        int port = 8090; // Matching the client port
+        ServerSocket serverSocket = new ServerSocket(port);
+        System.out.println("Server is listening on port " + port);
+
+        while (true) {
+            try {
+                Socket acceptConnection = serverSocket.accept(); // Accepts incoming clients
+                System.out.println("Client connected: " + acceptConnection.getInetAddress());
+
+                // Create Input and Output Streams
+                BufferedReader dataFromClient = new BufferedReader(new InputStreamReader(acceptConnection.getInputStream()));
+                PrintWriter dataToClient = new PrintWriter(acceptConnection.getOutputStream(), true);
+
+                // Read message from client
+                String message = dataFromClient.readLine();
+                System.out.println("Received from client: " + message);
+
+                // Send response to client
+                dataToClient.println("Hello, Client! Your message was received.");
+
+                // Close resources
+                dataFromClient.close();
+                dataToClient.close();
+                acceptConnection.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Server server = new Server();
-        try{
+        try {
             server.run();
-        }catch(Exception ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-
 }
