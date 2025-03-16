@@ -1,5 +1,5 @@
 <div class="container mx-auto p-4">
-  <h1 class="text-3xl font-bold mb-6">Web Server Load Testing Dashboard</h1>
+  <h1 class="text-3xl font-bold mb-6 text-center">Web Server Load Testing Dashboard</h1>
 
   <!-- Error Display -->
   <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -65,7 +65,7 @@
   </div>
 
   <!-- Test Results -->
-  <div *ngIf="loadTestResults" class="bg-white p-4 rounded-lg shadow">
+  <div *ngIf="loadTestResults" class="bg-white p-4 rounded-lg shadow mb-6">
     <h2 class="text-xl font-semibold mb-4">Load Test Results</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div>
@@ -88,6 +88,14 @@
         <label class="block text-sm font-medium text-gray-700">Success Rate</label>
         <span class="text-lg">{{ loadTestResults.successRate.toFixed(2) }}%</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Performance Chart -->
+  <div class="bg-white p-4 rounded-lg shadow">
+    <h2 class="text-xl font-semibold mb-4">Performance Comparison</h2>
+    <div class="h-96 relative">
+      <canvas #performanceChart></canvas>
     </div>
   </div>
 

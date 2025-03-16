@@ -14,6 +14,11 @@ export interface LoadTestResult {
   successRate: number;
 }
 
+interface ServerResponse {
+  message?: string;
+  error?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,12 +28,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  startServer(serverType: string, port: number = 8080): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${serverType}/start?port=${port}`, {});
+  startServer(serverType: string, port: number = 8080): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(`${this.apiUrl}/${serverType}/start?port=${port}`, {});
   }
 
-  stopServer(serverType: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${serverType}/stop`, {});
+  stopServer(serverType: string): Observable<ServerResponse> {
+    return this.http.post<ServerResponse>(`${this.apiUrl}/${serverType}/stop`, {});
   }
 
   getServerStatus(serverType: string): Observable<ServerStatus> {

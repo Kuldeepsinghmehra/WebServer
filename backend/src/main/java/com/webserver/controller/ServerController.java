@@ -20,24 +20,24 @@ public class ServerController {
     private final ServerManagerService serverManagerService;
 
     @PostMapping("/{serverType}/start")
-    public ResponseEntity<String> startServer(
+    public ResponseEntity<Map<String, String>> startServer(
             @PathVariable String serverType,
             @RequestParam(defaultValue = "8080") int port) {
         try {
             serverManagerService.startServer(serverType, port);
-            return ResponseEntity.ok("Server started successfully");
+            return ResponseEntity.ok(Map.of("message", "Server started successfully"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
     @PostMapping("/{serverType}/stop")
-    public ResponseEntity<String> stopServer(@PathVariable String serverType) {
+    public ResponseEntity<Map<String, String>> stopServer(@PathVariable String serverType) {
         try {
             serverManagerService.stopServer(serverType);
-            return ResponseEntity.ok("Server stopped successfully");
+            return ResponseEntity.ok(Map.of("message", "Server stopped successfully"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
